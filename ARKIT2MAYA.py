@@ -62,14 +62,14 @@ class ARKIT2MAYA:
         cmds.scrollField("sf",edit = True,text = len(self.data))
     def get_current_frame(self,*args):
         try:
-            index = int(cmd.textField("frame_index",query = True,text = True ))
+            index = int(cmds.textField("frame_index",query = True,text = True ))
             self.current_frame_data = self.data[index].split('~')
             cmds.scrollField("sf",edit = True,text ='''current frame data load...\n
             frame index :%s\n
             data length: %s
             '''%(index,len(self.current_frame_data)))
         except:
-            cmds.scrollField("sf",edit = True,text ="Can't load current frame data£¡")
+            cmds.scrollField("sf",edit = True,text ="Can't load current frame dataÂ£Â¡")
         
     def load_data(self,*args):
         basicFilter = "*.txt"
@@ -78,7 +78,7 @@ class ARKIT2MAYA:
             self.data = open(path).readlines()
             cmds.scrollField("sf",edit = True,text ="data loaded!")
         except:
-            cmds.scrollField("sf",edit = True,text ="Please load the correct file£¡")
+            cmds.scrollField("sf",edit = True,text ="Please load the correct fileÂ£Â¡")
         print("load_data")
         
     def apply_transform(self,*args):
