@@ -28,8 +28,11 @@ class ARKIT2MAYA:
         cmds.button( label = "apply transform", command = self.apply_transform)
         cmds.button( label = "apply vertex", command = self.apply_vertex)
         cmds.button( label = "apply blendshape",command = self.apply_blendshape)
-        cmds.button( label = "info",command = self.info)
+
         
+        cmds.button( label = "apply blendshape animation",command = self.blendshape_animation)
+        
+        cmds.button( label = "info",command = self.info)
         cmds.columnLayout(columnWidth=400,parent = "rl" )
         cmds.scrollField("sf",editable=False, wordWrap=True, text='''
         
@@ -58,8 +61,26 @@ class ARKIT2MAYA:
         self.fm = []
         self.vertexes = []
         self.blendshapes =[]
+        self.frame_count=0
+    def blendshape_animation(self,*args):
+        #pass
+        #bs = ""
+        for index in range(0,self.frame_count):
+            cf = self.data[index].split('~')
+            blendshapes = cf[1222:1273]
+            for i,v in enumerate(blendshapes):
+                #self.blendshapes.append(v)
+                #bs = "%s\n%s"%(bs,v)
+                #print(v.split(":"))
+                name = v.split(":")[0]
+                value = float(v.split(":")[1])
+                cmds.setKeyframe('blendShape1', v=value, attribute=name+"_b",t=index)
+            cmds.scrollField("sf",edit = True,text =index)
+    
     def get_frame_count(self,*args):
         cmds.scrollField("sf",edit = True,text = len(self.data))
+        self.frame_count = len(self.data)
+        
     def get_current_frame(self,*args):
         try:
             index = int(cmds.textField("frame_index",query = True,text = True ))
@@ -69,7 +90,7 @@ class ARKIT2MAYA:
             data length: %s
             '''%(index,len(self.current_frame_data)))
         except:
-            cmds.scrollField("sf",edit = True,text ="Can't load current frame dataÂ£Â¡")
+            cmds.scrollField("sf",edit = True,text ="Can't load current frame data£¡")
         
     def load_data(self,*args):
         basicFilter = "*.txt"
@@ -78,7 +99,7 @@ class ARKIT2MAYA:
             self.data = open(path).readlines()
             cmds.scrollField("sf",edit = True,text ="data loaded!")
         except:
-            cmds.scrollField("sf",edit = True,text ="Please load the correct fileÂ£Â¡")
+            cmds.scrollField("sf",edit = True,text ="Please load the correct file£¡")
         print("load_data")
         
     def apply_transform(self,*args):
@@ -122,6 +143,7 @@ class ARKIT2MAYA:
         for i,v in enumerate(blendshapes):
             self.blendshapes.append(v)
             bs = "%s\n%s"%(bs,v)
+            print(v.split(":"))
         cmds.scrollField("sf",edit = True,text =bs)
         print("blendshape")
         
